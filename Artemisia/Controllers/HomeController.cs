@@ -1,8 +1,9 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using EstudioSombrancelha.Models;
+using Artemisia.Models;
+using System.Collections.Generic;
 
-namespace EstudioSombrancelha.Controllers;
+namespace Artemisia.Controllers;
 
 public class HomeController : Controller
 {
@@ -11,6 +12,19 @@ public class HomeController : Controller
     public HomeController(ILogger<HomeController> logger)
     {
         _logger = logger;
+    }
+
+    public IActionResult Catalog()
+    {
+        // No futuro, você buscaria estes dados de um banco de dados.
+        var catalogItems = new List<CatalogItem>
+        {
+            new CatalogItem { Id = 1, Name = "Design de Sobrancelha", Description = "Modelagem com pinça e linha para um formato perfeito.", ImageUrl = "/images/design.jpg" },
+            new CatalogItem { Id = 2, Name = "Micropigmentação", Description = "Técnica fio a fio para preenchimento e definição.", ImageUrl = "/images/micro.jpg" },
+            new CatalogItem { Id = 3, Name = "Lash Lifting", Description = "Curvatura e hidratação dos cílios naturais.", ImageUrl = "/images/lash.jpg" }
+        };
+
+        return Json(catalogItems); // Retorna os dados como JSON
     }
 
     public IActionResult Index()

@@ -1,4 +1,4 @@
-namespace EstudioSombrancelha.Models;
+namespace Artemisia.Models;
 
 public class ErrorViewModel
 {

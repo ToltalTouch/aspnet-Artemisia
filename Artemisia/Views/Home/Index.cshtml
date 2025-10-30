@@ -6,6 +6,16 @@
     <h1 class="display-4">Artemisia</h1>
     <p class="mt-4">
         <a class="btn btn-home" asp-controller="Home" asp-action="About">Quem somos</a>
-        <a class="btn btn-catalog" asp-controller="Home" asp-action="Catalog">Catalogo</a>
         <a class="btn btn-contact" asp-controller="Home" asp-action="Contact">Contato</a>
+    </p>
+    <div id="react-catalog-container"></div>
 </div>
+
+@section Scripts {
+    <!-- Scripts do React -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+    <!-- Script do seu componente -->
+    <script src="~/js/catalog.js"></script>
+}
