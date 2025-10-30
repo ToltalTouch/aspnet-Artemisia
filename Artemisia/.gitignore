@@ -1,0 +1,21 @@
+# .gitignore for .NET projects (minimal)
+
+# Build Folders
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Rider
+.idea/
+
+# NuGet
+*.nupkg
+
+# Logs and temporary files
+*.log
+*.cache
+.DS_Store
