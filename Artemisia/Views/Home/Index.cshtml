@@ -3,19 +3,33 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Artemisia</h1>
-    <p class="mt-4">
-        <a class="btn btn-home" asp-controller="Home" asp-action="About">Quem somos</a>
-        <a class="btn btn-contact" asp-controller="Home" asp-action="Contact">Contato</a>
-    </p>
-    <div id="react-catalog-container"></div>
+    <h1> Bem-vinda à Artemisia</h1>
 </div>
 
-@section Scripts {
-    <!-- Scripts do React -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+<div class="filtros-area mb=4 p=3 bg-light rounded">
+    <h4>Filtros</h4>
+    <form asp-controller="Produto" asp-action="Index" method="get">
+        <input type="text" name="busca" placeholder="Buscar produto..." class="form-control" />
+        <button type="submit" class="btn btn-primary mt-2">Buscar</button>
+    </form>
+</div>
 
-    <!-- Script do seu componente -->
-    <script src="~/js/catalog.js"></script>
-}
+<div class="row produtos-grid">
+    @foreach (var produto in Model.Produtos)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="@produto.UrlImagem" class="card-img-top" alt="@produto.Nome" />
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">@produto.Nome</h5>
+                    <p class="card-text text-danger font-weight-bold">R$ @produto.Preco.ToString("N2")</p>
+
+                    <div class="mt-auto">
+                        <a asp-controller="Produto" asp-action="Detalhes" aps-route-id="@produto.Id" class="btn btn-outline-secundary btn-sm">Ver Detalhes</a>
+                        <a asp-controller="Carrinho" asp-action="Adicionar" aps-route-od="@produto.Id" class="btn btn-success mt-2-2 w-100">Adicionar ao Carrinho</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
