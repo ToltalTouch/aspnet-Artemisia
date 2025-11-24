@@ -23,15 +23,82 @@ body {
 
 /* Brand colors and layout adjustments */
 :root{
-  --brand-yellow: #e2e61e;
+  --gold-dark: #b8881e;
+  --gold-mid: #e6bf46;
+  --gold-light: #f6e59e;
+  --brand-yellow: linear-gradient(90deg,
+    var(--gold-dark) 0%,
+    var(--gold-mid) 22%,
+    var(--gold-light) 50%,
+    var(--gold-mid) 78%,
+    var(--gold-dark) 100%);
   --brand-brown: #b1b181;
   --brand-dark: #737442;
+  --brand-black: #2b2310;
   --muted: #ececa7;
+}
+
+.gold-bar{
+  display: inline-block;
+  padding: 10px 24px;
+  border-radius:8px;
+  position:relative;
+  color:#2b2310;
+  font-weight:700;
+  letter-spacing:0.6px;
+  background: linear-gradient(90deg,
+    var(--gold-dark) 0%,
+    var(--gold-mid) 22%,
+    var(--gold-light) 50%,
+    var(--gold-mid) 78%,
+    var(--gold-dark) 100%
+    );
+  box-shadow:
+    0 6px 18px rgba(0,0,0,0.18),
+    inset 0 2px 10px rgba(255,255,255,0.25),
+    inset 0 -8px 20px rgba(0,0,0,0.12);
+}
+
+.gold-bar::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+  repeating-linear-gradient(
+    -45deg,
+    rgba(255,255,255,0.2) 0 2px,
+    rgba(0,0,0,0.02) 2px 4px
+  );
+  mix-blend-mode: overlay;
+  pointer-events:none;
+  opacity:0.9;
+}
+
+.gold-bar::after{
+  content:"";
+  position:absolute;
+  left:-10%;
+  top:0;
+  width:120%;
+  height:45%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.4), rgba(255,255,255,0.04));
+  transform:skewY(-4deg);
+  pointer-events:none;
+  opacity:0.95;
+  filter: blur(0.6px);
+}
+
+.gold-bar .engrave{
+  display:inline-block;
+  margin-left:10px;
+  font-size:10px;
+  color:rgba(0,0,0,0.25);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.35);
 }
 
 /* Top bar */
 .top-bar{
-  background: var(--brand-brown);
+  background: var(--brand-black);
 }
 
 /* Top bar tweaks */
@@ -39,9 +106,27 @@ body {
 
 /* Main navigation */
 .main-nav{background: white}
-.brand-logo{height:40px;width:auto}
+.brand-logo{
+  height:120px;
+  width:auto;
+  display:block;
+  transition:height .18s ease;
+  object-fit:contain;
+}
 .brand-name{font-family: 'Segoe UI',sans-serif;font-weight:700;color:var(--brand-dark);margin-left:8px}
 .btn-brown{background:var(--brand-brown);border:none;color:#fff}
+
+/* garante alinhamento vertical do brand */
+.navbar-brand{ display:flex; align-items:center; gap:10px; }
+
+/* tamanhos menores */
+@media (max-width: 992px){
+  .brand-logo{ height:100px; }
+}
+@media (max-width: 576px){
+  .brand-logo{ height:40px; }
+  .produtos-grid .card .card-img-top{height:240px}
+}
 
 /* Category navigation */
 .category-nav{background: #fff;border-top:1px solid #f3d6a1;border-bottom:1px solid #f3d6a1}
@@ -58,7 +143,7 @@ body {
 
 /* Hero section */
 .hero{background:var(--brand-yellow);padding:4rem 2rem;text-align:center;margin-bottom:2rem}
-.hero h1{font-size:3rem;color:var(--brand-dark);font-weight:700}
+.hero h1{font-size:3rem;color:var(--brand-black);font-weight:700}
 
 /* Footer tweaks */
 .footer{background:var(--brand-brown);color:#fff;padding:3rem 0;margin-top:2rem}
