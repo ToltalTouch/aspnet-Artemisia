@@ -1,0 +1,72 @@
+@model IEnumerable<Artemisia.Models.Produto>
+
+@{
+    ViewData["Title"] = "Produtos";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="hero d-flex align-items-center justify-content-between">
+                <div>
+                    <h1>Planner</h1>
+                    <p class="text-muted">Início / Planners / Planner</p>
+                </div>
+                <div class="hero-image">
+                    <img src="/images/hero.jpg" alt="Hero" style="max-height:130px;opacity:0.6" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <aside class="col-lg-3 mb-4">
+            <div class="filters-area">
+                <h4>Filtros</h4>
+                <hr />
+                <div class="mb-3">
+                    <label class="form-label">Categoria</label>
+                    <select class="form-select">
+                        <option>Todos</option>
+                        <option>Planners</option>
+                        <option>Canecas</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Preço</label>
+                    <input type="range" class="form-range" />
+                </div>
+                <div>
+                    <a class="btn btn-outline-secondary w-100" href="#">Ver Todos</a>
+                </div>
+            </div>
+        </aside>
+
+        <section class="col-lg-9">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>Show: <strong>9 / 12 / 18 / 24</strong></div>
+                <div>Ordenar por <select class="form-select d-inline-block w-auto ms-2"><option>mais recente</option></select></div>
+            </div>
+
+            <div class="row produtos-grid">
+                @foreach (var produto in Model)
+                {
+                    <div class="col-6 col-md-4 mb-4">
+                        <div class="card h-100">
+                            <img src="@produto.ImagemUrl" class="card-img-top" alt="@produto.Nome" />
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">@produto.Nome</h5>
+                                <p class="card-text text-danger font-weight-bold">R$ @produto.Preco.ToString("N2")</p>
+
+                                <div class="mt-auto">
+                                    <a asp-controller="Produto" asp-action="Detalhes" asp-route-id="@produto.Id" class="btn btn-outline-secondary btn-sm">Ver Detalhes</a>
+                                    <a asp-controller="Carrinho" asp-action="Adicionar" asp-route-id="@produto.Id" class="btn btn-success mt-2 w-100">Adicionar ao Carrinho</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
+    </div>
+</div>

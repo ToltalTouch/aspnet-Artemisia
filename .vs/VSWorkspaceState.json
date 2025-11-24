@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Artemisia",
+    "\\Artemisia\\Controllers",
+    "\\Artemisia\\Models",
+    "\\Artemisia\\Views",
+    "\\Artemisia\\Views\\Home",
+    "\\Artemisia\\Views\\Shared",
+    "\\Artemisia\\wwwroot",
+    "\\Artemisia\\wwwroot\\js"
+  ],
+  "SelectedNode": "\\Artemisia\\Artemisia.csproj",
+  "PreviewInSolutionExplorer": false
+}

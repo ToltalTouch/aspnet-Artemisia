@@ -1,7 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using Artemisia.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Configure DbContext (uses DefaultConnection from appsettings.json)
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+                       ?? "Server=(localdb)\\mssqllocaldb;Database=ArtemisiaDb;Trusted_Connection=True;MultipleActiveResultSets=true";
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));
 
 var app = builder.Build();
 

@@ -1,4 +1,4 @@
-using Microsoft.ApsNetCore,Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Artemisia.Models;
 using Artemisia.Data;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +13,7 @@ namespace Artemisia.Controllers
             _context = context;
         }
 
-        public async Task<IsActionResult> Index()
+        public async Task<IActionResult> Index()
         {
             var produtos = await _context.Produtos
                                 .Include(p => p.Categoria)

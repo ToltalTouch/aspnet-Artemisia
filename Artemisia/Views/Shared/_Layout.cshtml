@@ -3,19 +3,49 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Nome da Loja</title>
+    <title>@ViewData["Title"] - Artemisia</title>
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Nome da Loja</a>
-                <a class="nav-link text-dark" asp-controller="Carrinho" asp-action="Index">
-                    🛒 Carrinho (@(ViewBag.TotalItensCarrinho ?? 0))
+        <!-- Top Promo Bar -->
+        <div class="top-bar text-white text-center py-2">
+            <div class="container small">Frete grátis nas compras acima de R$299</div>
+        </div>
+
+        <nav class="navbar navbar-expand-lg navbar-light main-nav py-3">
+            <div class="container d-flex align-items-center">
+                <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="/images/logo.png" alt="Logo" class="brand-logo mr-2" />
+                    <span class="brand-name">Artemisia</span>
                 </a>
+
+                <form class="flex-fill mx-4" asp-controller="Produto" asp-action="Index" method="get">
+                    <div class="input-group">
+                        <input type="text" name="busca" class="form-control" placeholder="Pesquisar produtos..." />
+                        <button class="btn btn-brown" type="submit">🔍</button>
+                    </div>
+                </form>
+
+                <div class="d-flex align-items-center">
+                    <a class="nav-link text-dark me-3" asp-controller="Home" asp-action="Catalog">Blog</a>
+                    <a class="nav-link text-dark me-3" asp-controller="Carrinho" asp-action="Index">🛒 Carrinho (@(ViewBag.TotalItensCarrinho ?? 0))</a>
+                    <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Privacy">Seja um Franqueado</a>
+                </div>
+            </div>
+        </nav>
+
+        <nav class="navbar navbar-expand-sm category-nav py-2">
+            <div class="container">
+                <ul class="nav">
+                    <li class="nav-item"><a class="nav-link" href="#">PLANNERS/AGENDAS 2026</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">SACOLAS PERSONALIZADAS</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">LANÇAMENTOS</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">COLLAB</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">CANECAS</a></li>
+                </ul>
             </div>
         </nav>
     </header>
@@ -28,7 +58,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - Nome da Loja - <a asp-area="" asp-controller="Home" asp-action="Privacy">Política de Privacidade</a>
+            &copy; 2025 - Artemisia - <a asp-area="" asp-controller="Home" asp-action="Privacy">Política de Privacidade</a>
         </div>
     </footer>
 

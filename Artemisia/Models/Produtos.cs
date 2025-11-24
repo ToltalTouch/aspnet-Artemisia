@@ -5,34 +5,35 @@ namespace Artemisia.Models
 {
     public class Produto
     {
-        // Chave primária
+        // Chave primï¿½ria
         public int Id { get; set; }
 
-        //Nome do produto com validação
-        [Required(ErrorMessage = "O nome do produto é obrigatório.")]
-        [StringLenght(100, ErroMessage = "O nome do produto não pode exceder 100 caracteres.")]
-        public string Nome { get; set; }
+        //Nome do produto com validaï¿½ï¿½o
+    [Required(ErrorMessage = "O nome do produto Ã© obrigatÃ³rio.")]
+    [StringLength(100, ErrorMessage = "O nome do produto nÃ£o pode exceder 100 caracteres.")]
+    public string Nome { get; set; } = string.Empty;
 
-        // Descrição do produto com validação
-        [Required(ErrorMessage = "A descrição do produto é obrigatória.")]
-        [Display(namespace = "Descrição Completa do Produto")]
+        // Descriï¿½ï¿½o do produto com validaï¿½ï¿½o
+    [Required(ErrorMessage = "A descriÃ§Ã£o do produto Ã© obrigatÃ³ria.")]
+    [Display(Name = "DescriÃ§Ã£o Completa do Produto")]
+    public string Descricao { get; set; } = string.Empty;
 
-        // Preço do produto
-        [Required(ErrorMessage = "O preço do produto é obrigatório.")]
-        [Column(TypeName = "decimal(18, 2")]
-        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatIntEditMode = false)]
+        // Preï¿½o do produto
+        [Required(ErrorMessage = "O preï¿½o do produto ï¿½ obrigatï¿½rio.")]
+        [Column(TypeName = "decimal(18, 2)")]
+        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = false)]
         public decimal Preco { get; set; }
 
         // URL da imagem do produto
-        [Display(Name = "URL da Imagem do Produto")]
-        public string ImagemUrl { get; set; }
+    [Display(Name = "URL da Imagem do Produto")]
+    public string ImagemUrl { get; set; } = string.Empty;
 
         // Estoque
-        public int QuantidadeEmEstoque { get; set;}
+        public int QuantidadeEmEstoque { get; set; }
 
         //Chave estrangeira para Categoria
-        [Display(namespace = "Categoria")]
-        public interface CategoriaId { get; set; }
-        public Categoria Categoria { get; set; }
+        [Display(Name = "Categoria")]
+    public int CategoriaId { get; set; }
+    public Categoria? Categoria { get; set; }
     }
 }

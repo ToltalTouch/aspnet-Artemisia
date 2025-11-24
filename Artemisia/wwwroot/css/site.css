@@ -9,7 +9,7 @@ html {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #1f3955;
 }
 
 html {
@@ -19,6 +19,53 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+/* Brand colors and layout adjustments */
+:root{
+  --brand-yellow: #e2e61e;
+  --brand-brown: #b1b181;
+  --brand-dark: #737442;
+  --muted: #ececa7;
+}
+
+/* Top bar */
+.top-bar{
+  background: var(--brand-brown);
+}
+
+/* Top bar tweaks */
+.top-bar .small{font-weight:600}
+
+/* Main navigation */
+.main-nav{background: white}
+.brand-logo{height:40px;width:auto}
+.brand-name{font-family: 'Segoe UI',sans-serif;font-weight:700;color:var(--brand-dark);margin-left:8px}
+.btn-brown{background:var(--brand-brown);border:none;color:#fff}
+
+/* Category navigation */
+.category-nav{background: #fff;border-top:1px solid #f3d6a1;border-bottom:1px solid #f3d6a1}
+.category-nav .nav-link{color:#666;font-weight:600;margin-right:18px}
+
+/* Products grid */
+.produtos-grid{margin-top:1rem}
+.produtos-grid .card{border:1px solid #8b7b5d}
+.produtos-grid .card .card-img-top{height:180px;object-fit:cover}
+
+/* Filters area */
+.filters-area{background:#fff;border:1px solid #7c6c4f;padding:1rem}
+.filters-area h4{font-weight:700;color:var(--brand-dark)}
+
+/* Hero section */
+.hero{background:var(--brand-yellow);padding:4rem 2rem;text-align:center;margin-bottom:2rem}
+.hero h1{font-size:3rem;color:var(--brand-dark);font-weight:700}
+
+/* Footer tweaks */
+.footer{background:var(--brand-brown);color:#fff;padding:3rem 0;margin-top:2rem}
+
+@media(min-width:992px){
+  .brand-logo{height:50px}
+  .produtos-grid .card .card-img-top{height:240px}
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
