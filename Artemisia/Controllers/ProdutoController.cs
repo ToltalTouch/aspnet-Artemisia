@@ -1,60 +1,63 @@
 using Microsoft.AspNetCore.Mvc;
-using Artemisia.Models;
-using Artemisia.Data;
 using Microsoft.EntityFrameworkCore;
+
+using Artemisia.Data;
+using Artemisia.Models;
 
 namespace Artemisia.Controllers
 {
     public class ProdutoController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        public ProdutoController(ApplicationDbContext context)
+        private readonly ApplicationDbContext _db;
+        private readonly IWebHostEnvironment _env;
+
+        public ProdutoController(ApplicationDbContext db, IWebHostEnvironment env)
         {
-            _context = context;
+            _db = db;
+            _env = env;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Create()
         {
-            var produtos = await _context.Produtos
-                                .Include(p => p.Categoria)
-                                .ToListAsync();
-
-            return View(produtos);
-        }
-
-        public async Task<IActionResult> Detalhes(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var produto = await _context.Produtos
-                                .Include(p => p.Categoria)
-                                .FirstOrDefaultAsync(m => m.Id == id);
-            if (produto == null)
-            {
-                return NotFound();
-            }
-
-            return View(produto);
-        }
-
-        public IActionResult Criar()
-        {
+            ViewBag.Categorias = await _db.Categorias.ToListAsync();
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Criar([Bind("Nome, Descricao, Preco, ImagemUrl, QuantidadeEmEstoque, CategoriaId")] Produto produto)
+        public async Task<IActionResult> Create(Produto model, IFormFile imagem)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(produto);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewBag.Categorias = await _db.Categorias.AsNoTracking().ToListAsync();
+                return View(model);
             }
-            return View(produto);
+
+            if (imagem != null && imagem.Length > 0)
+            {
+                var imagesPath = Path.Combine(_env.WebRootPath, "images", "products");
+                if (!Directory.Exists(imagesPath)) Directory.CreateDirectory(imagesPath);
+
+                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(imagem.FileName)}";
+                var filePath = Path.Combine(imagesPath, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imagem.CopyToAsync(stream);
+                }
+
+                model.ImagemUrl = $"/images/products/{fileName}";
+            }
+            _db.Produtos.Add(model);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var produtos = await _db.Produtos.Include(p => p.Categoria).ToListAsync();
+            return View(produtos);
         }
     }
 }
