@@ -1,0 +1,47 @@
+@model Artemisia.Models.Produto
+
+@{
+    ViewData["Title"] = "Adicionar Produto";
+    var categorias = ViewBag.Categorias as List<Artemisia.Models.Categoria> ?? new();
+}
+
+<h2>Adicionar Produto</h2>
+
+<form asp-action="Create" enctype="multipart/form-data" method="post">
+    <div class="mb-3">
+        <label asp-for="Nome" class="form-label"></label>
+        <input asp-for="Nome" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Descricao" class="form-label"></label>
+        <textarea asp-for="Descricao" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Categoria</label>
+        <select asp-for="CategoriaId" class="form-select">
+            <option value="">-- selecione --</option>
+            @foreach(var c in categorias) {
+                <option value="@c.Id">@c.Nome</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Preco" class="form-label"></label>
+        <input asp-for="Preco" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="QuantidadeEmEstoque" class="form-label"></label>
+        <input asp-for="QuantidadeEmEstoque" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Imagem do produto</label>
+        <input type="file" name="imagem" class="form-control" accept="image/*" />
+    </div>
+
+    <button class="btn btn-primary" type="submit">Salvar</button>
+</form>
