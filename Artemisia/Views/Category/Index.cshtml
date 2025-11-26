@@ -1,0 +1,16 @@
+@model IEnumerable<Artemisia.Models.Categoria>
+@{
+    var cat = ViewData["CurrentCategory"] as string;
+    var sub = ViewData["CurrentSubcategory"] as string;
+    var page = (int)(ViewData["CurrentPage"] ?? 1);
+}
+
+<h1 class="mb-3">@((sub ?? cat) ?? "Produtos")</h1>
+
+<div id="product-grid">
+    @await Html.PartialAsync("_ProductGrid", Model)
+</div>
+
+<nav aria-label="Page navigation" class="mt-3">
+    <a class="btn btn-outline-secondary" href="@Url.Action("Index", "Category", new { categorySlug = cat, subCategorySlug = sub, page = page + 1})" id="load-more">Carregar mais produtos</a>
+</nav>
