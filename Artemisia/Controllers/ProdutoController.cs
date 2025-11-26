@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 
 using Artemisia.Data;
@@ -10,15 +11,27 @@ namespace Artemisia.Controllers
     {
         private readonly ApplicationDbContext _db;
         private readonly IWebHostEnvironment _env;
+        private readonly IConfiguration _config;
 
-        public ProdutoController(ApplicationDbContext db, IWebHostEnvironment env)
+        public ProdutoController(ApplicationDbContext db, IWebHostEnvironment env, IConfiguration config)
         {
             _db = db;
             _env = env;
+            _config = config;
+        }
+
+        private bool IsAdmin()
+        {
+            // Simple admin check using a header X-Admin-Key matched against configuration value AdminKey
+            var adminKey = _config["AdminKey"];
+            if (string.IsNullOrEmpty(adminKey)) return false;
+            if (!Request.Headers.TryGetValue("X-Admin-Key", out var provided)) return false;
+            return string.Equals(provided.ToString(), adminKey, StringComparison.Ordinal);
         }
 
         public async Task<IActionResult> Create()
         {
+            if (!IsAdmin()) return Forbid();
             ViewBag.Categorias = await _db.Categorias.ToListAsync();
             return View();
         }
@@ -27,6 +40,7 @@ namespace Artemisia.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Produto model, IFormFile imagem)
         {
+            if (!IsAdmin()) return Forbid();
             if (!ModelState.IsValid)
             {
                 ViewBag.Categorias = await _db.Categorias.AsNoTracking().ToListAsync();
@@ -70,7 +84,19 @@ namespace Artemisia.Controllers
                 model.ImagemUrl ??= string.Empty;
             }
             _db.Produtos.Add(model);
-            await _db.SaveChangesAsync();
+            try
+            {
+                await _db.SaveChangesAsync();
+                TempData["Success"] = "Produto salvo com sucesso.";
+            }
+            catch (Exception ex)
+            {
+                // Log and show friendly message
+                Console.WriteLine("Save product failed: " + ex.Message);
+                TempData["Error"] = "Ocorreu um erro ao salvar o produto.";
+                ViewBag.Categorias = await _db.Categorias.AsNoTracking().ToListAsync();
+                return View(model);
+            }
 
             return RedirectToAction(nameof(Index));
         }

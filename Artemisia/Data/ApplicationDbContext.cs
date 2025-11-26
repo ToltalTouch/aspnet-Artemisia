@@ -9,5 +9,15 @@ namespace Artemisia.Data
 
 		public DbSet<Produto> Produtos { get; set; }
 		public DbSet<Categoria> Categorias { get; set; }
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			// Ensure decimal precision for Preco to avoid truncation warnings
+			modelBuilder.Entity<Produto>()
+				.Property(p => p.Preco)
+				.HasColumnType("decimal(18,2)");
+
+			base.OnModelCreating(modelBuilder);
+		}
 	}
 }

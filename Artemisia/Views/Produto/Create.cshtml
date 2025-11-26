@@ -6,16 +6,27 @@
 }
 
 <h2>Adicionar Produto</h2>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+else if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
 
 <form asp-action="Create" enctype="multipart/form-data" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="mb-3">
         <label asp-for="Nome" class="form-label"></label>
         <input asp-for="Nome" class="form-control" />
+        <span asp-validation-for="Nome" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="Descricao" class="form-label"></label>
         <textarea asp-for="Descricao" class="form-control"></textarea>
+        <span asp-validation-for="Descricao" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
@@ -26,16 +37,19 @@
                 <option value="@c.Id">@c.Nome</option>
             }
         </select>
+        <span asp-validation-for="CategoriaId" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="Preco" class="form-label"></label>
         <input asp-for="Preco" class="form-control" />
+        <span asp-validation-for="Preco" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="QuantidadeEmEstoque" class="form-label"></label>
         <input asp-for="QuantidadeEmEstoque" class="form-control" />
+        <span asp-validation-for="QuantidadeEmEstoque" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
@@ -45,3 +59,7 @@
 
     <button class="btn btn-primary" type="submit">Salvar</button>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
