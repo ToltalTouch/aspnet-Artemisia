@@ -7,11 +7,11 @@ namespace Artemisia.Models
     {
         public int Id { get; set; }
         public int CategoriaId { get; set; }
-        public Categoria Categoria { get; set; }
+        public Categoria? Categoria { get; set; }
 
-        public string Nome { get; set; }
-        public string Descricao { get; set; }
-        public string ImagemUrl { get; set; }
+        public string Nome { get; set; } = string.Empty;
+        public string Descricao { get; set; } = string.Empty;
+        public string ImagemUrl { get; set; } = string.Empty;
         public decimal Preco { get; set; }
         public int QuantidadeEmEstoque { get; set; }
     }

@@ -1,11 +1,20 @@
 using Microsoft.EntityFrameworkCore;
 using Artemisia.Data;
 using Artemisia.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Configure cookie-based authentication so we can sign in an admin and use Forbid/Authorize safely
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+    });
 
 // Configure DbContext (uses DefaultConnection from appsettings.json)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
@@ -53,6 +62,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+// authentication must come before authorization
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();

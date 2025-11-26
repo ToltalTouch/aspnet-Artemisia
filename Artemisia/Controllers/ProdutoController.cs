@@ -22,8 +22,17 @@ namespace Artemisia.Controllers
 
         private bool IsAdmin()
         {
-            // Simple admin check using a header X-Admin-Key matched against configuration value AdminKey
+            // Prefer cookie/claims-based admin (set after login). Keep header fallback for API/tools.
             var adminKey = _config["AdminKey"];
+            try
+            {
+                if (User?.Identity?.IsAuthenticated == true && User.IsInRole("Admin")) return true;
+            }
+            catch
+            {
+                // ignore if User is not available
+            }
+
             if (string.IsNullOrEmpty(adminKey)) return false;
             if (!Request.Headers.TryGetValue("X-Admin-Key", out var provided)) return false;
             return string.Equals(provided.ToString(), adminKey, StringComparison.Ordinal);
