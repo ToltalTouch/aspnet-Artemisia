@@ -4007,23 +4007,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\micael.amaral\\.nuget\\packages\\": {},
+    "C:\\Users\\micae\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Artemisia.csproj",
+      "projectUniqueName": "D:\\projetos\\C#\\oat-web2-ToltalTouch\\Artemisia\\Artemisia.csproj",
       "projectName": "Artemisia",
-      "projectPath": "C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Artemisia.csproj",
-      "packagesPath": "C:\\Users\\micael.amaral\\.nuget\\packages\\",
-      "outputPath": "C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\obj\\",
+      "projectPath": "D:\\projetos\\C#\\oat-web2-ToltalTouch\\Artemisia\\Artemisia.csproj",
+      "packagesPath": "C:\\Users\\micae\\.nuget\\packages\\",
+      "outputPath": "D:\\projetos\\C#\\oat-web2-ToltalTouch\\Artemisia\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\micael.amaral\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\micae\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -4095,7 +4095,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

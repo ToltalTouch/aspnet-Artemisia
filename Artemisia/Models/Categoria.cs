@@ -9,7 +9,7 @@ namespace Artemisia.Models
 		public string Nome { get; set; } = string.Empty;
 
 		// Self-referencing hierarchy: optional parent and collection of subcategories
-		[Required]
+		// ParentCategoriaId is optional for root categories
 		public int? ParentCategoriaId { get; set; }
 		public Categoria? ParentCategoria { get; set; }
 
