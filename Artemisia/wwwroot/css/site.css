@@ -276,3 +276,40 @@ body {
     margin-bottom:12px;
   }
 }
+
+/* Desktop dropdown behavior: hide by default, show on .show or hover; add transitions and sensible widths */
+@media (min-width: 992px){
+  .category-nav .nav-item.dropdown > .dropdown-menu {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(6px);
+    transition: opacity .12s ease, transform .12s ease, visibility .12s ease;
+    min-width: 220px; /* sensible minimum */
+    max-width: 420px; /* avoid overly wide menus */
+    padding: .4rem 0;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    border-radius: 6px;
+  }
+
+  /* show on JS toggle (.show) or on hover for desktop users */
+  .category-nav .nav-item.dropdown.show > .dropdown-menu,
+  .category-nav .nav-item.dropdown:hover > .dropdown-menu {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  /* keep the megamenu full-width behavior intact but add top spacing */
+  .category-nav .megamenu{
+    margin-top: 8px;
+  }
+
+  /* ensure dropdown items don't wrap and look tidy */
+  .category-nav .dropdown-menu .dropdown-item{
+    white-space: nowrap;
+    padding: .45rem 1rem;
+    color: #444;
+  }
+}

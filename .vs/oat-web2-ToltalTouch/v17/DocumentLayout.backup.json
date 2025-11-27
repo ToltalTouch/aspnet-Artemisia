@@ -7,6 +7,22 @@
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Artemisia\\Controllers\\ProdutoController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\C#\\oat-web2-ToltalTouch\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Artemisia\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Data\\ApplicationDbContext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Artemisia\\Data\\ApplicationDbContext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Models\\Categoria.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Artemisia\\Models\\Categoria.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Models\\Produtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Artemisia\\Models\\Produtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -21,10 +37,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Models\\CatalogItem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Artemisia\\Models\\CatalogItem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Artemisia\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\wwwroot\\js\\catalog.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
@@ -50,11 +62,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 7,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "Artemisia\\Views\\Shared\\_Layout.cshtml",
@@ -64,6 +76,45 @@
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-10-30T14:47:07.398Z",
               "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\C#\\oat-web2-ToltalTouch\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\C#\\oat-web2-ToltalTouch\\appsettings.json*",
+              "RelativeToolTip": "appsettings.json*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-04T12:35:59.599Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "Artemisia\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "Artemisia\\Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-04T12:35:46.846Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Categoria.cs",
+              "DocumentMoniker": "C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Models\\Categoria.cs",
+              "RelativeDocumentMoniker": "Artemisia\\Models\\Categoria.cs",
+              "ToolTip": "C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Models\\Categoria.cs",
+              "RelativeToolTip": "Artemisia\\Models\\Categoria.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-04T12:35:43.453Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Bookmark",
@@ -81,14 +132,14 @@
               "RelativeDocumentMoniker": "Artemisia\\Controllers\\ProdutoController.cs",
               "ToolTip": "C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Controllers\\ProdutoController.cs",
               "RelativeToolTip": "Artemisia\\Controllers\\ProdutoController.cs",
-              "ViewState": "AgIAACcAAAAAAAAAAAAgwDsAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAACUAAAAAAAAAAAApwDkAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-30T19:32:50.248Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "Produtos.cs",
               "DocumentMoniker": "C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Models\\Produtos.cs",
               "RelativeDocumentMoniker": "Artemisia\\Models\\Produtos.cs",
@@ -101,19 +152,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Program.cs",
               "RelativeDocumentMoniker": "Artemisia\\Program.cs",
               "ToolTip": "C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Program.cs",
               "RelativeToolTip": "Artemisia\\Program.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAWwBwAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAQwBwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T18:02:02.471Z"
+              "WhenOpened": "2025-10-30T18:02:02.471Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 11,
               "Title": "_ViewImports.cshtml",
               "DocumentMoniker": "C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Views\\_ViewImports.cshtml",
               "RelativeDocumentMoniker": "Artemisia\\Views\\_ViewImports.cshtml",
@@ -125,7 +177,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 12,
               "Title": "ErrorViewModel.cs",
               "DocumentMoniker": "C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Models\\ErrorViewModel.cs",
               "RelativeDocumentMoniker": "Artemisia\\Models\\ErrorViewModel.cs",
@@ -137,7 +189,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 8,
               "Title": "CatalogItem.cs",
               "DocumentMoniker": "C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Models\\CatalogItem.cs",
               "RelativeDocumentMoniker": "Artemisia\\Models\\CatalogItem.cs",
@@ -149,7 +201,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 10,
               "Title": "HomeController.cs",
               "DocumentMoniker": "C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "Artemisia\\Controllers\\HomeController.cs",
@@ -161,7 +213,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 9,
               "Title": "catalog.js",
               "DocumentMoniker": "C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\wwwroot\\js\\catalog.js",
               "RelativeDocumentMoniker": "Artemisia\\wwwroot\\js\\catalog.js",
@@ -173,7 +225,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "Artemisia\\Views\\Home\\Index.cshtml",

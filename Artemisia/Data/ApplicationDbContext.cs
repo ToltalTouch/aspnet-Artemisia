@@ -17,6 +17,13 @@ namespace Artemisia.Data
 				.Property(p => p.Preco)
 				.HasColumnType("decimal(18,2)");
 
+			// Categoria self-referencing (Parent <-> SubCategorias)
+			modelBuilder.Entity<Categoria>()
+				.HasMany(c => c.SubCategorias)
+				.WithOne(c => c.ParentCategoria)
+				.HasForeignKey(c => c.ParentCategoriaId)
+				.OnDelete(DeleteBehavior.Restrict);
+
 			base.OnModelCreating(modelBuilder);
 		}
 	}

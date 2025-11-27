@@ -1,0 +1,46 @@
+@using Artemisia.Data
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext Db
+
+@{
+    var categories = Db.Categorias
+                       .Include(c => c.SubCategorias)
+                       .OrderBy(c => c.Nome)
+                       .ToList();
+}
+
+<nav class="category-nav">
+    <div class="container">
+        <ul class="nav justify-content-center">
+            <li class="nav-item"><a class="nav-link" href="/">INÍCIO</a></li>
+            @foreach (var c in categories)
+            {
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle ajax-category-link"
+                       href="@Url.Action("Index","Category", new { categoryId = c.Id })"
+                       data-category-id="@c.Id"
+                       data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                        @c.Nome
+                    </a>
+
+                    @if (c.SubCategorias != null && c.SubCategorias.Any())
+                    {
+                        <ul class="dropdown-menu">
+                            @foreach (var s in c.SubCategorias.OrderBy(sc => sc.Nome))
+                            {
+                                <li>
+                                    <a class="dropdown-item ajax-category-link"
+                                       href="@Url.Action("Index", "Category", new { categoryId = c.Id, subCategoryId = s.Id })"
+                                       data-category-id="@c.Id"
+                                       data-subcategory-id="@s.Id">
+                                        @s.Nome
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </li>
+            }
+        </ul>
+    </div>
+</nav>

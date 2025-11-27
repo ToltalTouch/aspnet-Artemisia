@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace Artemisia.Controllers
 {
@@ -15,7 +16,7 @@ namespace Artemisia.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login(string returnUrl = null)
+        public IActionResult Login(string? returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             return View();
@@ -23,7 +24,7 @@ namespace Artemisia.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(string adminKey, string returnUrl = null)
+        public async Task<IActionResult> Login(string? adminKey, string? returnUrl = null)
         {
             var configured = _config["AdminKey"];
             if (!string.IsNullOrEmpty(configured) && configured == adminKey)

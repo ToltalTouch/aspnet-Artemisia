@@ -10,6 +10,6 @@
     "\\Artemisia\\wwwroot",
     "\\Artemisia\\wwwroot\\js"
   ],
-  "SelectedNode": "\\Artemisia\\Artemisia.csproj",
+  "SelectedNode": "\\Artemisia\\Controllers\\ProdutoController.cs",
   "PreviewInSolutionExplorer": false
 }

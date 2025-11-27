@@ -1,62 +1,60 @@
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
-using System.log;
-using System.Threading.Tasks;
+using Artemisia.Data;
+using Artemisia.Models;
 
 namespace Artemisia.Controllers
 {
     public class CategoryController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private const int PageSize = 10;
+        private const int PageSize = 12;
 
-        public CategoryController(ApplicationDbContext context) => _context = context;
-
-        [Route("categoria/{categorySlug}/{subCategorySlug?}")]
-        public async Task<IActionResult> Index(string categorySlug, string? subCategorySlug, int page = 1)
+        public CategoryController(ApplicationDbContext context)
         {
-            if (string.IsNullOrEmpty(categorySlug)) return NotFound();
+            _context = context;
+        }
+
+        // GET /categoria/{categoryId}
+        [Route("categoria/{categoryId:int}")]
+        public async Task<IActionResult> Index(int categoryId, int page = 1)
+        {
+            var categoria = await _context.Categorias.FindAsync(categoryId);
+            if (categoria == null) return NotFound();
 
             var query = _context.Produtos
                                 .Include(p => p.Categoria)
-                                .AsQueryable()
-                                .Where(p => p.Categoria.Slug == categorySlug);
-
-            if(!string.IsNullOrEmpty(subCategorySlug))
-                query = query.Where(pp => pp.SubCategoria != null && pp.SubCategoria.Slug == subCategorySlug);
+                                .Where(p => p.CategoriaId == categoryId)
+                                .AsQueryable();
 
             var produtos = await query.OrderBy(p => p.Nome)
-                                        .Skip((page - 1) * PageSize)
-                                        .Take(PageSize)
-                                        .ToListAsync();
+                                      .Skip((page - 1) * PageSize)
+                                      .Take(PageSize)
+                                      .ToListAsync();
 
-            ViewData["CategorySlug"] = categorySlug;
-            ViewData["SubCategorySlug"] = subCategorySlug;
-            ViewData["Page"] = page;
+            ViewData["CurrentCategory"] = categoria.Nome;
+            ViewData["CurrentCategoryId"] = categoryId;
+            ViewData["CurrentPage"] = page;
 
             return View(produtos);
         }
 
+        // GET (AJAX) -> returns partial HTML of product grid
+        // /categoria/products?categoryId=1&page=1
         [HttpGet("categoria/products")]
-        public async Task<IActionResult> ProductsFragment(string categorySlug, string? subCategorySlug, int pages = 1)
+        public async Task<IActionResult> ProductsFragment(int categoryId, int page = 1)
         {
-            if (string.IsNullOrEmpty(categorySlug)) return BadRequest();
-
             var query = _context.Produtos
                                 .Include(p => p.Categoria)
-                                .AsQueryable()
-                                .Where(p => p.Categoria.Slug == categorySlug);
-
-            if (!string.IsNullOrEmpty(subCategorySlug))
-                query = query.Where(p => p.SubCategoria != null && p.SubCategoria.Slug == subCategorySlug);
+                                .Where(p => p.CategoriaId == categoryId)
+                                .AsQueryable();
 
             var produtos = await query.OrderBy(p => p.Nome)
-                                        .Skip((pages - 1) * PageSize)
-                                        .Take(PageSize)
-                                        .ToListAsync();
+                                      .Skip((page - 1) * PageSize)
+                                      .Take(PageSize)
+                                      .ToListAsync();
 
-            return PartialView("_ProductsFragment", produtos);
+            return PartialView("_ProductGrid", produtos);
         }
-        
     }
 }
