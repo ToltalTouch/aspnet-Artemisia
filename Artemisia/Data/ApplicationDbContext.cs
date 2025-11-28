@@ -14,17 +14,18 @@ namespace Artemisia.Data
 		{
 			// Ensure decimal precision for Preco to avoid truncation warnings
 			modelBuilder.Entity<Produto>()
-				.Property(p => p.Preco)
-				.HasColumnType("decimal(18,2)");
-
-			// Categoria self-referencing (Parent <-> SubCategorias)
-			modelBuilder.Entity<Categoria>()
-				.HasMany(c => c.SubCategorias)
-				.WithOne(c => c.ParentCategoria)
-				.HasForeignKey(c => c.ParentCategoriaId)
+				.HasOne(p => p.Categoria)
+				.WithMany(c => c.Produtos)
+				.HasForeignKey(p => p.CategoriaId)
 				.OnDelete(DeleteBehavior.Restrict);
 
-			base.OnModelCreating(modelBuilder);
-		}
+			// Produto -> SubCategoria (opcional): sem coleção inversa
+			modelBuilder.Entity<Produto>()
+				.HasOne(p => p.SubCategoria)
+				.WithMany() // sem navigation inverse
+				.HasForeignKey(p => p.SubCategoriaId)
+				.OnDelete(DeleteBehavior.Restrict);
+					base.OnModelCreating(modelBuilder);
+				}
 	}
 }

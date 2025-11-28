@@ -2,6 +2,8 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 a.navbar-brand {
+  width: 400px;
+  flex-shrink: 0;
   white-space: normal;
   text-align: center;
   word-break: break-all;

@@ -41,6 +41,9 @@
     document.querySelectorAll(DROPDOWN_SELECTOR).forEach(setupDropdown);
     setupAjaxCategoryLinks();
     window.addEventListener('popstate', onPopState);
+    // inicializações adicionais
+    enableHoverDropdowns();
+    initShowCount();
   }
 
   // AJAX category handling (uses categoryId data attribute)
@@ -123,8 +126,32 @@
     });
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
-    enableHoverDropdowns();
-  });
-  
+  function initShowCount() {
+    // botões: qualquer .btn-group com atributo data-count
+    const buttons = document.querySelectorAll('.btn-group [data-count]');
+    // produtos: filhos diretos do container .produtos-grid conforme Index.cshtml
+    const items = document.querySelectorAll('.produtos-grid > div');
+    if (!buttons.length || !items.length) return;
+
+    function update(count) {
+      buttons.forEach(b => b.classList.toggle('active', parseInt(b.dataset.count, 10) === count));
+      items.forEach((el, i) => el.style.display = i < count ? '' : 'none');
+    }
+
+    const qs = new URLSearchParams(location.search);
+    const saved = parseInt(qs.get('pageSize'), 10) || parseInt(localStorage.getItem('pageSize'), 10) || 9;
+    update(saved);
+
+    buttons.forEach(b => b.addEventListener('click', function () {
+      const c = parseInt(this.dataset.count, 10);
+      if (Number.isNaN(c)) return;
+      localStorage.setItem('pageSize', c);
+      const url = new URL(location);
+      url.searchParams.set('pageSize', c);
+      history.replaceState(null, '', url);
+      update(c);
+    }));
+  }
+
+  // initAll já é registrado mais acima; nada extra necessário aqui
 })();

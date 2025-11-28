@@ -13,7 +13,6 @@ namespace Artemisia.Data.Migrations
             migrationBuilder.AddColumn<int>(
                 name: "ParentCategoriaId",
                 table: "Categorias",
-                type: "int",
                 nullable: true);
 
             migrationBuilder.CreateIndex(

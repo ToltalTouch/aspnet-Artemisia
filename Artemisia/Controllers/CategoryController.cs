@@ -19,7 +19,9 @@ namespace Artemisia.Controllers
         [Route("categoria/{categoryId:int}")]
         public async Task<IActionResult> Index(int categoryId, int page = 1)
         {
-            var categoria = await _context.Categorias.FindAsync(categoryId);
+            var categoria = await _context.Categorias
+                .Include(c => c.SubCategorias)
+                .FirstOrDefaultAsync(c => c.Id == categoryId);
             if (categoria == null) return NotFound();
 
             var query = _context.Produtos
@@ -35,6 +37,12 @@ namespace Artemisia.Controllers
             ViewData["CurrentCategory"] = categoria.Nome;
             ViewData["CurrentCategoryId"] = categoryId;
             ViewData["CurrentPage"] = page;
+            // Passa apenas categorias raiz (ParentCategoriaId == null) incluindo SubCategorias
+            ViewData["Categories"] = await _context.Categorias
+                                                      .Include(c => c.SubCategorias)
+                                                      .Where(c => c.ParentCategoriaId == null)
+                                                      .OrderBy(c => c.Nome)
+                                                      .ToListAsync();
 
             return View(produtos);
         }

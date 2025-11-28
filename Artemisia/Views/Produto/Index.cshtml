@@ -8,7 +8,7 @@
     <div class="hero d-flex align-items-center justify-content-between">
         <div class="container">
             <div>
-                <h1>Bem-vindo à Artemisia</h1>
+                <h1 class="h1">Bem-vindo à Artemisia</h1>
             </div>
         </div>
     </div>
@@ -39,7 +39,15 @@
 
     <section class="col-lg-9">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <div>Show: <strong>9 / 12 / 18 / 24</strong></div>
+            <div>
+                Mostrar: 
+                <div class="btn-group ms-2" role="group" aria-label="Mostrar itens">
+                    <button type="button" class="btn btn-outline-secondary" data-count="9">9</button>
+                    <button type="button" class="btn btn-outline-secondary" data-count="12">12</button>
+                    <button type="button" class="btn btn-outline-secondary" data-count="18">18</button>
+                    <button type="button" class="btn btn-outline-secondary" data-count="24">24</button>
+                </div>
+            </div>
             <div>Ordenar por <select class="form-select d-inline-block w-auto ms-2"><option>mais recente</option></select></div>
             <div>
                 <!-- Botão de administração: navega para a action Create do ProdutoController -->

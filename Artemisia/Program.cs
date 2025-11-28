@@ -20,8 +20,19 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 // Configure DbContext (uses DefaultConnection from appsettings.json)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
                        ?? "Server=(localdb)\\mssqllocaldb;Database=ArtemisiaDb;Trusted_Connection=True;MultipleActiveResultSets=true";
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+{
+    // if DefaultConnection looks like a sqlite file connection, use Sqlite provider
+    if (connectionString.TrimStart().StartsWith("Data Source=", StringComparison.OrdinalIgnoreCase))
+    {
+        options.UseSqlite(connectionString);
+    }
+    else
+    {
+        options.UseSqlServer(connectionString);
+    }
+});
 
 var app = builder.Build();
 
@@ -104,28 +115,47 @@ using (var scope = app.Services.CreateScope())
         // Seed few categories if none exist
         if (!db.Categorias.Any())
         {
-            var parents = new[] {
-                new Categoria { Nome = "PLANNERS" },
-                new Categoria { Nome = "AGENDAS" },
-                new Categoria { Nome = "FESTAS" },
-                new Categoria { Nome = "SACOLAS Personalizadas" },
-                new Categoria { Nome = "CANECAS" },
-                new Categoria { Nome = "LANÇAMENTOS" },
-                new Categoria { Nome = "OFERTAS" }
-            };
+            var ParentNames = new[] { "PLANNERS",
+                                    "AGENDAS",
+                                    "FESTAS",
+                                    "SACOLAS Personalizadas",
+                                    "CANECAS",
+                                    "LANÇAMENTOS",
+                                    "OFERTAS"
+                                    };
+            var parents = ParentNames.Select(m => new Categoria { Nome = m }).ToArray();
             db.Categorias.AddRange(parents);
             db.SaveChanges();
 
-            // Add a couple of sample subcategories for the first two parents
-            var p1 = parents[0];
-            var p2 = parents[1];
+            var subs = new[] {
+                new { Nome = "Planners 2026", ParentNames = "PLANNERS" },
+                new { Nome = "Planners Personalizados", ParentNames = "PLANNERS" },
+                new { Nome = "Agendas 2026", ParentNames = "AGENDAS" },
+                new { Nome = "Agendas Personalizados", ParentNames = "AGENDAS" },
+                new { Nome = "Decoração de Festas", ParentNames = "FESTAS" },
+                new { Nome = "Topos de Bolo", ParentNames = "FESTAS" },
+                new { Nome = "Festa Personalizada", ParentNames = "FESTAS" },
+                new { Nome = "Convites Personalizados", ParentNames = "FESTAS" },
+                new { Nome = "Sacolas Personalizadas", ParentNames = "SACOLAS Personalizadas" },
+                new { Nome = "Sacolas para Presentes", ParentNames = "SACOLAS Personalizadas" },
+                new { Nome = "Sacolas para sua Empresa", ParentNames = "SACOLAS Personalizadas" },
+                new { Nome = "Canecas de Cerâmica", ParentNames = "CANECAS" },
+                new { Nome = "Canecas Personalizadas", ParentNames = "CANECAS" },
+                new { Nome = "Novos Produtos", ParentNames = "LANÇAMENTOS" },
+                new { Nome = "Lançamentos Exclusivos", ParentNames = "LANÇAMENTOS" },
+                new { Nome = "Descontos Especiais", ParentNames = "OFERTAS" },
+                new { Nome = "Promoções Relâmpago", ParentNames = "OFERTAS" }
+            };
 
-            db.Categorias.AddRange(
-                new Categoria { Nome = "Agendas 2026", ParentCategoriaId = p1.Id },
-                new Categoria { Nome = "Planners Diários", ParentCategoriaId = p1.Id },
-                new Categoria { Nome = "Sacolas Tamanho P", ParentCategoriaId = p2.Id },
-                new Categoria { Nome = "Sacolas Tamanho G", ParentCategoriaId = p2.Id }
-            );
+            foreach (var s in subs)
+            {
+                var parent = parents.FirstOrDefault(p => p.Nome.Equals(s.ParentNames, StringComparison.OrdinalIgnoreCase));
+                if (parent != null)
+                {
+                    db.Categorias.Add(new Categoria { Nome = s.Nome, ParentCategoriaId = parent.Id });
+                }
+            }
+  
             db.SaveChanges();
 
             // Log seed result so startup logs make it obvious whether seeding occurred
@@ -150,6 +180,25 @@ using (var scope = app.Services.CreateScope())
         var msg = "Database migrate/seed failed: " + ex.ToString();
         Console.WriteLine(msg);
         AppendLog(msg);
+    }
+
+    // Debug: always print total categories count after migration attempt to help verify seeding
+    using (var scope2 = app.Services.CreateScope())
+    {
+        try
+        {
+            var db2 = scope2.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var total = db2.Categorias.Count();
+            var msg = $"DEBUG: total categorias (post-migrate) = {total}";
+            Console.WriteLine(msg);
+            AppendLog(msg);
+        }
+        catch (Exception ex)
+        {
+            var em = "DEBUG: failed to read categorias count: " + ex.ToString();
+            Console.WriteLine(em);
+            AppendLog(em);
+        }
     }
 }
 

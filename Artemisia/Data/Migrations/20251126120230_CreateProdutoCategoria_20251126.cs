@@ -13,19 +13,15 @@ namespace Artemisia.Data.Migrations
             migrationBuilder.AlterColumn<string>(
                 name: "Nome",
                 table: "Produtos",
-                type: "nvarchar(max)",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(100)",
                 oldMaxLength: 100);
 
             migrationBuilder.AlterColumn<string>(
                 name: "Nome",
                 table: "Categorias",
-                type: "nvarchar(max)",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(100)",
                 oldMaxLength: 100);
         }
 
@@ -35,20 +31,16 @@ namespace Artemisia.Data.Migrations
             migrationBuilder.AlterColumn<string>(
                 name: "Nome",
                 table: "Produtos",
-                type: "nvarchar(100)",
                 maxLength: 100,
                 nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                oldClrType: typeof(string));
 
             migrationBuilder.AlterColumn<string>(
                 name: "Nome",
                 table: "Categorias",
-                type: "nvarchar(100)",
                 maxLength: 100,
                 nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                oldClrType: typeof(string));
         }
     }
 }

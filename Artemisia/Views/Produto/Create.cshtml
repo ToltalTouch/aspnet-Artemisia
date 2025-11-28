@@ -41,6 +41,22 @@ else if (TempData["Error"] != null)
     </div>
 
     <div class="mb-3">
+        <label asp-for="SubCategoriaId" class="form-label"></label>
+        <select asp-for="SubCategoriaId" class="form-select">
+            <option value="">-- selecione --</option>
+            @foreach(var c in categorias) {
+                if (c.SubCategorias != null)
+                {
+                    foreach(var sc in c.SubCategorias) {
+                        <option value="@sc.Id">@sc.Nome</option>
+                    }
+                }
+            }
+        </select>
+        <span asp-validation-for="SubCategoriaId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
         <label asp-for="Preco" class="form-label"></label>
         <input asp-for="Preco" class="form-control" />
         <span asp-validation-for="Preco" class="text-danger"></span>
