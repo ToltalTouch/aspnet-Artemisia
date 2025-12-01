@@ -1,0 +1,71 @@
+@model Artemisia.Models.Produto
+
+@{
+    ViewData["Title"] = "Editar Produto";
+}
+
+<div class="container mt-4">
+    <h1 class="h3">Editar Produto</h1>
+    <hr />
+
+    <form asp-controller="Produto" asp-action="Edit" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label class="form-label">Nome</label>
+            <input asp-for="Nome" class="form-control" />
+            <span asp-validation-for="Nome" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Preço</label>
+            <input asp-for="Preco" class="form-control" />
+            <span asp-validation-for="Preco" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Quantidade em estoque</label>
+            <input asp-for="QuantidadeEmEstoque" class="form-control" />
+            <span asp-validation-for="QuantidadeEmEstoque" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Categoria</label>
+            <select asp-for="CategoriaId" class="form-select">
+                <option value="">-- selecione --</option>
+                @if (ViewBag.Categorias != null)
+                {
+                    foreach (var c in ViewBag.Categorias)
+                    {
+                        <option value="@c.Id" selected="@(Model.CategoriaId == c.Id ? "selected" : null)">@c.Nome</option>
+                        if (c.SubCategorias != null)
+                        {
+                            foreach (var sc in c.SubCategorias)
+                            {
+                                <option value="@sc.Id" selected="@(Model.SubCategoriaId == sc.Id ? "selected" : null)">&nbsp;&nbsp;- @sc.Nome</option>
+                            }
+                        }
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Descrição</label>
+            <textarea asp-for="Descricao" class="form-control"></textarea>
+            <span asp-validation-for="Descricao" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a asp-controller="Produto" asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Imagem do produto</label>
+            <input type="file" name="imagem" class="form-control" accept="image/*" />
+        </div>
+        
+    </form>
+</div>

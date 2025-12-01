@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,7 +39,8 @@ namespace Artemisia.Controllers
             return string.Equals(provided.ToString(), adminKey, StringComparison.Ordinal);
         }
 
-        public async Task<IActionResult> Create()
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Create()
         {
             if (!IsAdmin()) return Forbid();
             // Load root categories with their subcategories for the dropdowns
@@ -58,7 +60,8 @@ namespace Artemisia.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Edit(int id)
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Edit(int id)
         {
             if (!IsAdmin()) return Forbid();
 
@@ -74,7 +77,8 @@ namespace Artemisia.Controllers
             return View(produto);
         }
 
-        public async Task<IActionResult> Delete(int id)
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Delete(int id)
         {
             if (!IsAdmin()) return Forbid();
 
@@ -86,7 +90,8 @@ namespace Artemisia.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Produto model, IFormFile imagem)
+        [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Create(Produto model, IFormFile imagem)
         {
             if (!IsAdmin()) return Forbid();
             if (!ModelState.IsValid)
@@ -181,10 +186,15 @@ namespace Artemisia.Controllers
                 .OrderBy(c => c.Nome)
                 .ToListAsync();
             var produtos = await _db.Produtos.Include(p => p.Categoria).ToListAsync();
+            // Expose the controller's admin-check (includes header fallback) to the view
+            ViewBag.IsAdmin = IsAdmin();
             return View(produtos);
         }
 
-        public async Task<IActionResult> Edit(Produto model)
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Edit(Produto model)
         {
             if (!IsAdmin()) return Forbid();
 
@@ -204,9 +214,10 @@ namespace Artemisia.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (!IsAdmin()) return Forbid();
 

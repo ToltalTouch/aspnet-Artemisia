@@ -50,7 +50,10 @@
             </div>
             <div>Ordenar por <select class="form-select d-inline-block w-auto ms-2"><option>mais recente</option></select></div>
             <div>
-                <a asp-controller="Produto" asp-action="Create" class="btn btn-primary ms-3">Novo Produto</a>
+                @if ((bool)(ViewBag.IsAdmin ?? false))
+                {
+                    <a asp-controller="Produto" asp-action="Create" class="btn btn-primary ms-3">Novo Produto</a>
+                }
             </div>
         </div>
 
@@ -68,7 +71,7 @@
                                 <a asp-controller="Produto" asp-action="Detalhes" asp-route-id="@produto.Id" class="btn btn-outline-secondary btn-sm">Ver Detalhes</a>
                                 <a asp-controller="Carrinho" asp-action="Adicionar" asp-route-id="@produto.Id" class="btn btn-success mt-2 w-100">Adicionar ao Carrinho</a>
 
-                                @if (User.IsInRole("Admin"))
+                                @if ((bool)(ViewBag.IsAdmin ?? false))
                                 {
                                     <div class="mt-2 d-flex justify-content-between">
                                         <a asp-controller="Produto" asp-action="Edit" asp-route-id="@produto.Id" class="btn btn-warning btn-sm w-48">Editar</a>

@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Artemisia.Data;
 using Artemisia.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +18,17 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = "/Account/Login";
         options.AccessDeniedPath = "/Account/AccessDenied";
     });
+
+// Rotate cookie name to invalidate previously issued cookies (forces re-login)
+// Change the cookie name when you want to force all clients to sign in again.
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.Name = "ArtemisiaAuth_v2";
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.ExpireTimeSpan = TimeSpan.FromHours(8);
+    options.SlidingExpiration = true;
+});
 
 // Configure DbContext (uses DefaultConnection from appsettings.json)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
