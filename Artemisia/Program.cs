@@ -127,29 +127,30 @@ using (var scope = app.Services.CreateScope())
             db.Categorias.AddRange(parents);
             db.SaveChanges();
 
+            // Seed subcategorias
             var subs = new[] {
-                new { Nome = "Planners 2026", ParentNames = "PLANNERS" },
-                new { Nome = "Planners Personalizados", ParentNames = "PLANNERS" },
-                new { Nome = "Agendas 2026", ParentNames = "AGENDAS" },
-                new { Nome = "Agendas Personalizados", ParentNames = "AGENDAS" },
-                new { Nome = "Decoração de Festas", ParentNames = "FESTAS" },
-                new { Nome = "Topos de Bolo", ParentNames = "FESTAS" },
-                new { Nome = "Festa Personalizada", ParentNames = "FESTAS" },
-                new { Nome = "Convites Personalizados", ParentNames = "FESTAS" },
-                new { Nome = "Sacolas Personalizadas", ParentNames = "SACOLAS Personalizadas" },
-                new { Nome = "Sacolas para Presentes", ParentNames = "SACOLAS Personalizadas" },
-                new { Nome = "Sacolas para sua Empresa", ParentNames = "SACOLAS Personalizadas" },
-                new { Nome = "Canecas de Cerâmica", ParentNames = "CANECAS" },
-                new { Nome = "Canecas Personalizadas", ParentNames = "CANECAS" },
-                new { Nome = "Novos Produtos", ParentNames = "LANÇAMENTOS" },
-                new { Nome = "Lançamentos Exclusivos", ParentNames = "LANÇAMENTOS" },
-                new { Nome = "Descontos Especiais", ParentNames = "OFERTAS" },
-                new { Nome = "Promoções Relâmpago", ParentNames = "OFERTAS" }
+                new { Nome = "Planners 2026", ParentName = "PLANNERS" },
+                new { Nome = "Planners Personalizados", ParentName = "PLANNERS" },
+                new { Nome = "Agendas 2026", ParentName = "AGENDAS" },
+                new { Nome = "Agendas Personalizados", ParentName = "AGENDAS" },
+                new { Nome = "Decoração de Festas", ParentName = "FESTAS" },
+                new { Nome = "Topos de Bolo", ParentName = "FESTAS" },
+                new { Nome = "Festa Personalizada", ParentName = "FESTAS" },
+                new { Nome = "Convites Personalizados", ParentName = "FESTAS" },
+                new { Nome = "Sacolas Personalizadas", ParentName = "SACOLAS Personalizadas" },
+                new { Nome = "Sacolas para Presentes", ParentName = "SACOLAS Personalizadas" },
+                new { Nome = "Sacolas para sua Empresa", ParentName = "SACOLAS Personalizadas" },
+                new { Nome = "Canecas de Cerâmica", ParentName = "CANECAS" },
+                new { Nome = "Canecas Personalizadas", ParentName = "CANECAS" },
+                new { Nome = "Novos Produtos", ParentName = "LANÇAMENTOS" },
+                new { Nome = "Lançamentos Exclusivos", ParentName = "LANÇAMENTOS" },
+                new { Nome = "Descontos Especiais", ParentName = "OFERTAS" },
+                new { Nome = "Promoções Relâmpago", ParentName = "OFERTAS" }
             };
 
             foreach (var s in subs)
             {
-                var parent = parents.FirstOrDefault(p => p.Nome.Equals(s.ParentNames, StringComparison.OrdinalIgnoreCase));
+                var parent = parents.FirstOrDefault(p => string.Equals(p.Nome, s.ParentName, StringComparison.OrdinalIgnoreCase));
                 if (parent != null)
                 {
                     db.Categorias.Add(new Categoria { Nome = s.Nome, ParentCategoriaId = parent.Id });
@@ -162,13 +163,79 @@ using (var scope = app.Services.CreateScope())
             try
             {
                 var total = db.Categorias.Count();
-                var seedMsg = $"Database seed check complete. Categorias count = {total}";
+                var totalRoot = db.Categorias.Count(c => c.ParentCategoriaId == null);
+                var totalSub = db.Categorias.Count(c => c.ParentCategoriaId != null);
+                var seedMsg = $"Database seed check complete. Categorias count = {total} (Root: {totalRoot}, Sub: {totalSub})";
                 Console.WriteLine(seedMsg);
                 AppendLog(seedMsg);
             }
             catch (Exception ex)
             {
                 var em = "Error while logging seed result: " + ex.ToString();
+                Console.WriteLine(em);
+                AppendLog(em);
+            }
+        }
+        else
+        {
+            // Categories exist but check if subcategories are missing
+            var hasSubcategories = db.Categorias.Any(c => c.ParentCategoriaId != null);
+            if (!hasSubcategories)
+            {
+                Console.WriteLine("Categorias raiz existem mas subcategorias ausentes. Adicionando subcategorias...");
+                
+                var existingParents = db.Categorias.Where(c => c.ParentCategoriaId == null).ToList();
+                
+                var subs = new[] {
+                    new { Nome = "Planners 2026", ParentName = "PLANNERS" },
+                    new { Nome = "Planners Personalizados", ParentName = "PLANNERS" },
+                    new { Nome = "Agendas 2026", ParentName = "AGENDAS" },
+                    new { Nome = "Agendas Personalizados", ParentName = "AGENDAS" },
+                    new { Nome = "Decoração de Festas", ParentName = "FESTAS" },
+                    new { Nome = "Topos de Bolo", ParentName = "FESTAS" },
+                    new { Nome = "Festa Personalizada", ParentName = "FESTAS" },
+                    new { Nome = "Convites Personalizados", ParentName = "FESTAS" },
+                    new { Nome = "Sacolas Personalizadas", ParentName = "SACOLAS Personalizadas" },
+                    new { Nome = "Sacolas para Presentes", ParentName = "SACOLAS Personalizadas" },
+                    new { Nome = "Sacolas para sua Empresa", ParentName = "SACOLAS Personalizadas" },
+                    new { Nome = "Canecas de Cerâmica", ParentName = "CANECAS" },
+                    new { Nome = "Canecas Personalizadas", ParentName = "CANECAS" },
+                    new { Nome = "Novos Produtos", ParentName = "LANÇAMENTOS" },
+                    new { Nome = "Lançamentos Exclusivos", ParentName = "LANÇAMENTOS" },
+                    new { Nome = "Descontos Especiais", ParentName = "OFERTAS" },
+                    new { Nome = "Promoções Relâmpago", ParentName = "OFERTAS" }
+                };
+
+                foreach (var s in subs)
+                {
+                    var parent = existingParents.FirstOrDefault(p => string.Equals(p.Nome, s.ParentName, StringComparison.OrdinalIgnoreCase));
+                    if (parent != null)
+                    {
+                        // Check if sub doesn't already exist
+                        if (!db.Categorias.Any(c => c.Nome == s.Nome && c.ParentCategoriaId == parent.Id))
+                        {
+                            db.Categorias.Add(new Categoria { Nome = s.Nome, ParentCategoriaId = parent.Id });
+                        }
+                    }
+                }
+                
+                db.SaveChanges();
+                Console.WriteLine("Subcategorias adicionadas com sucesso.");
+            }
+            
+            // Log current state
+            try
+            {
+                var total = db.Categorias.Count();
+                var totalRoot = db.Categorias.Count(c => c.ParentCategoriaId == null);
+                var totalSub = db.Categorias.Count(c => c.ParentCategoriaId != null);
+                var msg = $"Database already seeded. Categorias count = {total} (Root: {totalRoot}, Sub: {totalSub})";
+                Console.WriteLine(msg);
+                AppendLog(msg);
+            }
+            catch (Exception ex)
+            {
+                var em = "Error while logging existing categories: " + ex.ToString();
                 Console.WriteLine(em);
                 AppendLog(em);
             }
