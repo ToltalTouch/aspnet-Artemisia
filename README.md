@@ -6,6 +6,9 @@
 
 Projeto ASP.NET Core MVC (backend + Razor Views) para gestão simples de produtos e categorias.
 
+Senha de admin para inserir novos produtos, editar e excluir: 
+**bigorna123**
+
 Principais pontos
 - Autenticação admin simples baseada em cookie (login por chave administrativa).
 - Página de listagem de produtos com botão "Novo Produto" (vai para /Produto/Create).
