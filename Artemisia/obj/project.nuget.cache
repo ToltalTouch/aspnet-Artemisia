@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "C8iInvuODpc=",
+  "dgSpecHash": "6xKvWsH9q/U=",
   "success": true,
-  "projectFilePath": "c:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Artemisia.csproj",
+  "projectFilePath": "C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Artemisia.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\micael.amaral\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\micael.amaral\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

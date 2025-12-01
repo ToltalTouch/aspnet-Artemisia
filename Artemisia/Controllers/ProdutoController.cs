@@ -41,7 +41,20 @@ namespace Artemisia.Controllers
         public async Task<IActionResult> Create()
         {
             if (!IsAdmin()) return Forbid();
-            ViewBag.Categorias = await _db.Categorias.ToListAsync();
+            // Load root categories with their subcategories for the dropdowns
+            ViewBag.Categorias = await _db.Categorias
+                .Include(c => c.SubCategorias)
+                .Where(c => c.ParentCategoriaId == null)
+                .OrderBy(c => c.Nome)
+                .ToListAsync();
+            
+            // Also load for menu
+            ViewData["Categories"] = await _db.Categorias
+                .Include(c => c.SubCategorias)
+                .Where(c => c.ParentCategoriaId == null)
+                .OrderBy(c => c.Nome)
+                .ToListAsync();
+            
             return View();
         }
 
@@ -52,7 +65,13 @@ namespace Artemisia.Controllers
             if (!IsAdmin()) return Forbid();
             if (!ModelState.IsValid)
             {
-                ViewBag.Categorias = await _db.Categorias.AsNoTracking().ToListAsync();
+                ViewBag.Categorias = await _db.Categorias
+                    .Include(c => c.SubCategorias)
+                    .Where(c => c.ParentCategoriaId == null)
+                    .OrderBy(c => c.Nome)
+                    .AsNoTracking()
+                    .ToListAsync();
+                ViewData["Categories"] = ViewBag.Categorias;
                 return View(model);
             }
             // Validate uploaded image (optional) - allow common image types and max 2MB
@@ -63,7 +82,13 @@ namespace Artemisia.Controllers
                 if (!allowed.Contains(ext))
                 {
                     ModelState.AddModelError("imagem", "Formato de imagem inválido. Use JPG, PNG, GIF ou WEBP.");
-                    ViewBag.Categorias = await _db.Categorias.AsNoTracking().ToListAsync();
+                    ViewBag.Categorias = await _db.Categorias
+                        .Include(c => c.SubCategorias)
+                        .Where(c => c.ParentCategoriaId == null)
+                        .OrderBy(c => c.Nome)
+                        .AsNoTracking()
+                        .ToListAsync();
+                    ViewData["Categories"] = ViewBag.Categorias;
                     return View(model);
                 }
 
@@ -71,7 +96,13 @@ namespace Artemisia.Controllers
                 if (imagem.Length > maxBytes)
                 {
                     ModelState.AddModelError("imagem", "A imagem deve ter no máximo 2MB.");
-                    ViewBag.Categorias = await _db.Categorias.AsNoTracking().ToListAsync();
+                    ViewBag.Categorias = await _db.Categorias
+                        .Include(c => c.SubCategorias)
+                        .Where(c => c.ParentCategoriaId == null)
+                        .OrderBy(c => c.Nome)
+                        .AsNoTracking()
+                        .ToListAsync();
+                    ViewData["Categories"] = ViewBag.Categorias;
                     return View(model);
                 }
 
@@ -103,7 +134,13 @@ namespace Artemisia.Controllers
                 // Log and show friendly message
                 Console.WriteLine("Save product failed: " + ex.Message);
                 TempData["Error"] = "Ocorreu um erro ao salvar o produto.";
-                ViewBag.Categorias = await _db.Categorias.AsNoTracking().ToListAsync();
+                ViewBag.Categorias = await _db.Categorias
+                    .Include(c => c.SubCategorias)
+                    .Where(c => c.ParentCategoriaId == null)
+                    .OrderBy(c => c.Nome)
+                    .AsNoTracking()
+                    .ToListAsync();
+                ViewData["Categories"] = ViewBag.Categorias;
                 return View(model);
             }
 
@@ -112,6 +149,11 @@ namespace Artemisia.Controllers
 
         public async Task<IActionResult> Index()
         {
+            ViewData["Categories"] = await _db.Categorias
+                .Include(c => c.SubCategorias)
+                .Where(c => c.ParentCategoriaId == null)
+                .OrderBy(c => c.Nome)
+                .ToListAsync();
             var produtos = await _db.Produtos.Include(p => p.Categoria).ToListAsync();
             return View(produtos);
         }

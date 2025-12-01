@@ -16,6 +16,12 @@ namespace Artemisia.Controllers
 
         public async Task<IActionResult> Index()
         {
+            ViewData["Categories"] = await _db.Categorias
+                .Include(c => c.SubCategorias)
+                .Where(c => c.ParentCategoriaId == null)
+                .OrderBy(c => c.Nome)
+                .ToListAsync();
+            
             var produtos = await _db.Produtos.Include(p => p.Categoria).ToListAsync();
 
             var model = new HomeIndexViewModel
