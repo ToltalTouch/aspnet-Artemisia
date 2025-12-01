@@ -9,6 +9,7 @@ Projeto ASP.NET Core MVC (backend + Razor Views) para gestão simples de produto
 Principais pontos
 - Autenticação admin simples baseada em cookie (login por chave administrativa).
 - Página de listagem de produtos com botão "Novo Produto" (vai para /Produto/Create).
+- Página para editar ou excluir produtos com o admin autenticado.
 - Scripts front-end em wwwroot/js (ex.: site.js controla dropdowns de categoria).
 - Banco: SQL Server LocalDB (ConnectionStrings em appsettings.json).
 
