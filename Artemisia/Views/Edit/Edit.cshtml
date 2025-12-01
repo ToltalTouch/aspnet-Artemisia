@@ -1,0 +1,50 @@
+@model Artemisia.Models.Produto
+
+<h2>Editar Produto</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id"/>
+    <div>
+        <label asp-for="Nome"></label>
+        <input asp-for="Nome" />
+        <span asp-validation-for="Nome"></span>
+    </div>
+
+    <div>
+        <label asp-for="Descricao"></label>
+        <textarea asp-for="Descricao"></textarea>
+        <span asp-validation-for="Descricao"></span>
+    </div>
+
+    <div>
+        <label asp-for="CategoriaId"></label>
+        <select asp-for="CategoriaId" asp-items="ViewBag.Categorias"></select>
+        <span asp-validation-for="CategoriaId"></span>
+    </div>
+
+    <div>
+        <label asp-for="SubCategoriaId"></label>
+        <select asp-for="SubCategoriaId" asp-items="ViewBag.SubCategorias"></select>
+        <span asp-validation-for="SubCategoriaId"></span>
+    </div>
+
+    <div>
+        <label asp-for="Preco"></label>
+        <input asp-for="Preco" />
+        <span asp-validation-for="Preco"></span>
+    </div>
+
+    <div>
+        <label asp-for="QuantidadeEmEstoque"></label>
+        <input asp-for="QuantidadeEmEstoque" />
+        <span asp-validation-for="QuantidadeEmEstoque"></span>
+    </div>
+
+    <div>
+        <label asp-for="ImagemUrl"></label>
+        <input asp-for="ImagemUrl" />
+        <span asp-validation-for="ImagemUrl"></span>
+    </div>
+
+    <button type="submit">Salvar</button>
+</form>

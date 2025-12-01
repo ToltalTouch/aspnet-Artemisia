@@ -50,7 +50,6 @@
             </div>
             <div>Ordenar por <select class="form-select d-inline-block w-auto ms-2"><option>mais recente</option></select></div>
             <div>
-                <!-- Botão de administração: navega para a action Create do ProdutoController -->
                 <a asp-controller="Produto" asp-action="Create" class="btn btn-primary ms-3">Novo Produto</a>
             </div>
         </div>
@@ -68,6 +67,14 @@
                             <div class="mt-auto">
                                 <a asp-controller="Produto" asp-action="Detalhes" asp-route-id="@produto.Id" class="btn btn-outline-secondary btn-sm">Ver Detalhes</a>
                                 <a asp-controller="Carrinho" asp-action="Adicionar" asp-route-id="@produto.Id" class="btn btn-success mt-2 w-100">Adicionar ao Carrinho</a>
+
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <div class="mt-2 d-flex justify-content-between">
+                                        <a asp-controller="Produto" asp-action="Edit" asp-route-id="@produto.Id" class="btn btn-warning btn-sm w-48">Editar</a>
+                                        <a asp-controller="Produto" asp-action="Delete" asp-route-id="@produto.Id" class="btn btn-danger btn-sm w-48">Excluir</a>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>

@@ -1,0 +1,39 @@
+@model Artemisia.Models.Produto
+
+@{
+    ViewData["Title"] = "Excluir Produto";
+}
+
+<div class="container mt-4">
+    <h1 class="h3">Excluir Produto</h1>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                @if (!string.IsNullOrEmpty(Model.ImagemUrl))
+                {
+                    <img src="@Model.ImagemUrl" class="card-img-top" alt="@Model.Nome" />
+                }
+                <div class="card-body">
+                    <h5 class="card-title">@Model.Nome</h5>
+                    <p class="card-text text-danger font-weight-bold">R$ @Model.Preco.ToString("N2")</p>
+                    <p class="card-text">@Model.Descricao</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="alert alert-warning">Tem certeza que deseja excluir este produto? Esta ação não pode ser desfeita.</div>
+
+            <form asp-controller="Produto" asp-action="DeleteConfirmed" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.Id" />
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger">Excluir</button>
+                    <a asp-controller="Produto" asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

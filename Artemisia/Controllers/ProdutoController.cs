@@ -58,6 +58,32 @@ namespace Artemisia.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (!IsAdmin()) return Forbid();
+
+            var produto = await _db.Produtos.FindAsync(id);
+            if (produto == null) return NotFound();
+
+            ViewBag.Categorias = await _db.Categorias
+                .Include(c => c.SubCategorias)
+                .Where( c => c.ParentCategoriaId == null)
+                .OrderBy(c => c.Nome)
+                .ToListAsync();
+            
+            return View(produto);
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (!IsAdmin()) return Forbid();
+
+            var produto = await _db.Produtos.FindAsync(id);
+            if (produto == null) return NotFound();
+
+            return View(produto);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Produto model, IFormFile imagem)
@@ -156,6 +182,42 @@ namespace Artemisia.Controllers
                 .ToListAsync();
             var produtos = await _db.Produtos.Include(p => p.Categoria).ToListAsync();
             return View(produtos);
+        }
+
+        public async Task<IActionResult> Edit(Produto model)
+        {
+            if (!IsAdmin()) return Forbid();
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Categorias = await _db.Categorias
+                    .Include(c => c.SubCategorias)
+                    .Where(c => c.ParentCategoriaId == null)
+                    .OrderBy(c => c.Nome)
+                    .ToListAsync();
+                return View(model);
+            }
+
+            _db.Produtos.Update(model);
+            await _db.SaveChangesAsync();
+            TempData["Success"] = "Produto atualizado com sucesso.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            if (!IsAdmin()) return Forbid();
+
+            var produto = await _db.Produtos.FindAsync(id);
+            if (produto != null)
+            {
+                _db.Produtos.Remove(produto);
+                await _db.SaveChangesAsync();
+                TempData["Success"] = "Produto excluído com sucesso.";
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
