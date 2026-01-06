@@ -9,7 +9,10 @@ using System.IO;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddControllersWithViews()
+    .AddViewLocalization()
+    .AddDataAnnotationsLocalization();
 
 // Configure cookie-based authentication so we can sign in an admin and use Forbid/Authorize safely
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
