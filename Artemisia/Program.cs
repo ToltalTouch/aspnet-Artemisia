@@ -150,8 +150,6 @@ using (var scope = app.Services.CreateScope())
                 new { Nome = "Sacolas Personalizadas", ParentName = "SACOLAS Personalizadas" },
                 new { Nome = "Sacolas para Presentes", ParentName = "SACOLAS Personalizadas" },
                 new { Nome = "Sacolas para sua Empresa", ParentName = "SACOLAS Personalizadas" },
-                new { Nome = "Canecas de Cerâmica", ParentName = "CANECAS" },
-                new { Nome = "Canecas Personalizadas", ParentName = "CANECAS" },
                 new { Nome = "Novos Produtos", ParentName = "LANÇAMENTOS" },
                 new { Nome = "Lançamentos Exclusivos", ParentName = "LANÇAMENTOS" },
                 new { Nome = "Descontos Especiais", ParentName = "OFERTAS" },
