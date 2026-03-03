@@ -4329,11 +4329,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Artemisia.csproj",
+      "projectUniqueName": "C:\\C#\\aspnet-Artemisia\\Artemisia\\Artemisia.csproj",
       "projectName": "Artemisia",
-      "projectPath": "C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\Artemisia.csproj",
+      "projectPath": "C:\\C#\\aspnet-Artemisia\\Artemisia\\Artemisia.csproj",
       "packagesPath": "C:\\Users\\micael.amaral\\.nuget\\packages\\",
-      "outputPath": "C:\\C#\\oat-web2-ToltalTouch\\Artemisia\\obj\\",
+      "outputPath": "C:\\C#\\aspnet-Artemisia\\Artemisia\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
