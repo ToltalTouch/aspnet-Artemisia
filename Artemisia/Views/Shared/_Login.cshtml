@@ -10,15 +10,15 @@
             </div>
 
             <div class="modal-body">
-                @Html.AntiForgeryToken()
                 <form id="loginForm" asp-controller="Account" asp-action="Login" method="post">
+                    @Html.AntiForgeryToken()
                     <div class="mb-3">
                         <label for="Input_Email" class="form-label">@Localizer["Email"]</label>
-                        <input type="email" class="form-control" id="Input_Email" name="Input.Email" required />                
+                        <input type="email" class="form-control" autocomplete="username" aria-required="true" id="Input_Email" name="email" required />                
                     </div>
                     <div class="mb-3">
                         <label for="Input_Password" class="form-label">@Localizer["Password"]</label>
-                        <input type="password" class="form-control" id="Input_Password" name="Input.Password" required />
+                        <input type="password" class="form-control" id="Input_Password" name="password" autocomplete="current-password" />
                     </div>
                     <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
                     <div class="text-danger" id="loginErrors" style="display:none;"></div>

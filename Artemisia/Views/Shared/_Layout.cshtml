@@ -34,13 +34,22 @@
                     <a class="btn btn-outline-secondary me-3" asp-controller="Home" asp-action="Privacy">Seja um Franqueado</a>
 
                     @await Html.PartialAsync("_Login")
-                    <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#loginModal">
-                      Login
-                    </button>
+
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <span class="me-2 text-dark fw-semibold">Bem-vindo, @User.Identity.Name</span>
+                        <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Logout</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#loginModal">
+                            Login
+                        </button>
+                    }
                 </div>
-
-                <!-- navigation placeholder (moved below as category bar) -->
-
             </div>
     </header>
 

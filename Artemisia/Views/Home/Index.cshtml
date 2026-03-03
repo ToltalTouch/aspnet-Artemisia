@@ -1,4 +1,163 @@
-﻿@{
-    var url = Url.Action("Index", "Produto");
+﻿@model Artemisia.Models.ViewModels.HomeIndexViewModel
+
+@{
+    ViewData["Title"] = "Produtos";
 }
-<meta http-equiv="refresh" content="0;url=@url" />
+
+<div class="container-fluid px-0">
+    <div class="hero d-flex align-items-center justify-content-between">
+        <div class="container">
+            <div>
+                <h1 class="h1">Bem-vindo à Artemisia</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <aside class="col-lg-3 mb-4">
+        <div class="filters-area">
+            <h4>Filtros</h4>
+            <hr />
+            <div class="mb-3">
+                <label class="form-label">Categoria</label>
+                <select class="form-select">
+                    <option>Todos</option>
+                    <option>Lançamentos</option>
+                    <option>Ofertas</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Preço</label>
+                <input type="range" class="form-range" />
+            </div>
+            <div>
+                <a class="btn btn-outline-secondary w-100" href="#">Ver Todos</a>
+            </div>
+        </div>
+    </aside>
+
+    <section class="col-lg-9">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                Mostrar: 
+                <div class="btn-group ms-2" role="group" aria-label="Mostrar itens">
+                    <button type="button" class="btn btn-outline-secondary" data-count="9">9</button>
+                    <button type="button" class="btn btn-outline-secondary" data-count="12">12</button>
+                    <button type="button" class="btn btn-outline-secondary" data-count="18">18</button>
+                    <button type="button" class="btn btn-outline-secondary" data-count="24">24</button>
+                </div>
+            </div>
+            <div>Ordenar por <select class="form-select d-inline-block w-auto ms-2"><option>mais recente</option></select></div>
+            <div>
+                @if ((bool)(ViewBag.IsAdmin ?? false))
+                {
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#produtoModal" data-url="@Url.Action("Create", "Produto")">
+                        Novo Produto
+                    </button>
+                }
+            </div>
+        </div>
+
+        <div class="row produtos-grid">
+            @foreach (var produto in Model.Produtos)
+            {
+                <div class="col-6 col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="@produto.ImagemUrl" class="card-img-top" alt="@produto.Nome" />
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">@produto.Nome</h5>
+                            <p class="card-text text-danger font-weight-bold">R$ @produto.Preco.ToString("N2")</p>
+
+                            <div class="mt-auto">
+                                <a asp-controller="Produto" asp-action="Detalhes" asp-route-id="@produto.Id" class="btn btn-outline-secondary btn-sm">Ver Detalhes</a>
+                                <a asp-controller="Carrinho" asp-action="Adicionar" asp-route-id="@produto.Id" class="btn btn-success mt-2 w-100">Adicionar ao Carrinho</a>
+
+                                @if ((bool)(ViewBag.IsAdmin ?? false))
+                                {
+                                    <div class="mt-2 d-flex justify-content-between">
+                                        <button type="button" class="btn btn-warning btn-sm w-48" data-bs-toggle="modal" data-bs-target="#produtoModal" data-url="@Url.Action("Edit", "Produto", new { id = produto.Id })">
+                                            Editar
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-sm w-48" data-bs-toggle="modal" data-bs-target="#produtoModal" data-url="@Url.Action("Delete", "Produto", new { id = produto.Id })">
+                                            Excluir
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+</div>
+
+<!-- Modal Placeholder -->
+<div class="modal fade" id="produtoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div id="modalContent">
+            <!-- O conteúdo do modal (Create, Edit, Delete) será carregado aqui -->
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            // Manipulador para carregar o conteúdo do modal dinamicamente
+            $('#produtoModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); // Botão que acionou o modal
+                var url = button.data('url');       // Extrai a URL do atributo data-url
+                var modal = $(this);
+
+                // Carrega o conteúdo da URL no div 'modalContent'
+                modal.find('#modalContent').load(url, function () {
+                    // Re-parse o validador do jQuery para o novo conteúdo carregado
+                    // Isso é essencial para a validação do lado do cliente funcionar no modal
+                    var form = $('#produtoForm');
+                    $.validator.unobtrusive.parse(form);
+                });
+            });
+
+            // Manipulador para o envio do formulário DENTRO do modal
+            // Usamos delegação de eventos para capturar o 'submit' de um formulário que ainda não existe na página
+            $(document).on('submit', '#produtoForm', function (e) {
+                e.preventDefault(); // Impede o envio padrão
+
+                var form = $(this);
+                var url = form.attr('action');
+                var formData = new FormData(this); // Usa FormData para suportar upload de arquivos
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: formData,
+                    processData: false,  // Necessário para FormData
+                    contentType: false,  // Necessário para FormData
+                    success: function (response) {
+                        if (response.success) {
+                            // Fecha o modal e recarrega a página para ver as alterações
+                            $('#produtoModal').modal('hide');
+                            location.reload();
+                        } else {
+                            // Se o controller retornar a PartialView com erros,
+                            // o HTML retornado é injetado de volta no modal.
+                            $('#modalContent').html(response);
+                            // Re-parse o validador para os novos elementos de erro
+                            $.validator.unobtrusive.parse(form);
+                        }
+                    },
+                    error: function () {
+                        alert("Ocorreu um erro ao processar a solicitação.");
+                    }
+                });
+            });
+
+            // Limpa o conteúdo do modal ao fechar para não exibir dados antigos na próxima vez
+            $('#produtoModal').on('hidden.bs.modal', function () {
+                $(this).find('#modalContent').empty();
+            });
+        });
+    </script>
+}
