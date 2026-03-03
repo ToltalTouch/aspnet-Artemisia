@@ -57,7 +57,7 @@ namespace Artemisia.Controllers
                 .OrderBy(c => c.Nome)
                 .ToListAsync();
             
-            return View();
+            return PartialView("_CreateProduto");
         }
 
     [Authorize(Roles = "Admin")]
@@ -85,7 +85,7 @@ namespace Artemisia.Controllers
             var produto = await _db.Produtos.FindAsync(id);
             if (produto == null) return NotFound();
 
-            return View(produto);
+            return PartialView("_DeleteProduto", produto);
         }
 
         [HttpPost]
@@ -103,7 +103,7 @@ namespace Artemisia.Controllers
                     .AsNoTracking()
                     .ToListAsync();
                 ViewData["Categories"] = ViewBag.Categorias;
-                return View(model);
+                return PartialView("_CreateProduto", model);
             }
             // Validate uploaded image (optional) - allow common image types and max 2MB
             if (imagem != null && imagem.Length > 0)
@@ -120,7 +120,7 @@ namespace Artemisia.Controllers
                         .AsNoTracking()
                         .ToListAsync();
                     ViewData["Categories"] = ViewBag.Categorias;
-                    return View(model);
+                    return PartialView("_CreateProduto", model);
                 }
 
                 const long maxBytes = 2 * 1024 * 1024; // 2MB
@@ -134,7 +134,7 @@ namespace Artemisia.Controllers
                         .AsNoTracking()
                         .ToListAsync();
                     ViewData["Categories"] = ViewBag.Categorias;
-                    return View(model);
+                    return PartialView("_CreateProduto", model);
                 }
 
                 var imagesPath = Path.Combine(_env.WebRootPath, "images", "products");
@@ -172,30 +172,18 @@ namespace Artemisia.Controllers
                     .AsNoTracking()
                     .ToListAsync();
                 ViewData["Categories"] = ViewBag.Categorias;
-                return View(model);
+                return PartialView("_CreateProduto", model);
             }
 
-            return RedirectToAction(nameof(Index));
+            return Json(new { success = true });
         }
 
-        public async Task<IActionResult> Index()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Edit(int id, Produto model, IFormFile? imagem)
         {
-            ViewData["Categories"] = await _db.Categorias
-                .Include(c => c.SubCategorias)
-                .Where(c => c.ParentCategoriaId == null)
-                .OrderBy(c => c.Nome)
-                .ToListAsync();
-            var produtos = await _db.Produtos.Include(p => p.Categoria).ToListAsync();
-            // Expose the controller's admin-check (includes header fallback) to the view
-            ViewBag.IsAdmin = IsAdmin();
-            return View(produtos);
-        }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> Edit(Produto model)
-        {
+            if (id != model.Id) return BadRequest();
             if (!IsAdmin()) return Forbid();
 
             if (!ModelState.IsValid)
@@ -205,19 +193,31 @@ namespace Artemisia.Controllers
                     .Where(c => c.ParentCategoriaId == null)
                     .OrderBy(c => c.Nome)
                     .ToListAsync();
-                return View(model);
+                return PartialView("_EditProduto", model);
+            }
+
+            if (imagem != null && imagem.Length > 0)
+            {
+                var imagesPath = Path.Combine(_env.WebRootPath, "images", "products");
+                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(imagem.FileName)}";
+                var filePath = Path.Combine(imagesPath, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imagem.CopyToAsync(stream);
+                }
+                model.ImagemUrl = $"/images/products/{fileName}";
             }
 
             _db.Produtos.Update(model);
             await _db.SaveChangesAsync();
-            TempData["Success"] = "Produto atualizado com sucesso.";
-            return RedirectToAction(nameof(Index));
+            return Json(new { success = true });
         }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> DeleteConfirmed(int id)
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (!IsAdmin()) return Forbid();
 
@@ -226,9 +226,8 @@ namespace Artemisia.Controllers
             {
                 _db.Produtos.Remove(produto);
                 await _db.SaveChangesAsync();
-                TempData["Success"] = "Produto excluído com sucesso.";
             }
-            return RedirectToAction(nameof(Index));
+            return Json(new { success = true });
         }
     }
 }

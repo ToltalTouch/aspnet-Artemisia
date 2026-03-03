@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 
 namespace Artemisia.Controllers
@@ -24,23 +25,32 @@ namespace Artemisia.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(string? adminKey, string? returnUrl = null)
+        public async Task<IActionResult> Login(string email, string password, string? returnUrl = null)
         {
-            var configured = _config["AdminKey"];
-            if (!string.IsNullOrEmpty(configured) && configured == adminKey)
+            var adminEmail = _config["AdminCredentials:Email"];
+            var adminPassword = _config["AdminCredentials:Password"];
+
+            if (email == adminEmail && password == adminPassword)
             {
-                var claims = new[] { new Claim(ClaimTypes.Name, "admin"), new Claim(ClaimTypes.Role, "Admin") };
+                var claims = new[] { new Claim(ClaimTypes.Name, email), new Claim(ClaimTypes.Role, "Admin") };
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(identity);
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
-                    return Redirect(returnUrl);
 
-                return RedirectToAction("Index", "Home");
+                var redirect = (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    ? returnUrl
+                    : Url.Action("Index", "Home");
+
+                return Json(new { success = true, redirect });
             }
 
-            ModelState.AddModelError(string.Empty, "Chave administrativa inválida.");
+            return Json(new { success = false, message = "E-mail ou senha inválidos." });
+        }
+
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
             return View();
         }
 
@@ -50,12 +60,6 @@ namespace Artemisia.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
-        }
-
-        [HttpGet]
-        public IActionResult AccessDenied()
-        {
-            return View();
         }
     }
 }

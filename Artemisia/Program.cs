@@ -20,18 +20,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         options.LoginPath = "/Account/Login";
         options.AccessDeniedPath = "/Account/AccessDenied";
+        options.Cookie.Name = "ArtemisiaAuth";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SameSite = SameSiteMode.Lax;
+        options.ExpireTimeSpan = TimeSpan.FromHours(8);
+        options.SlidingExpiration = true;
     });
-
-// Rotate cookie name to invalidate previously issued cookies (forces re-login)
-// Change the cookie name when you want to force all clients to sign in again.
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.Cookie.Name = "ArtemisiaAuth_v2";
-    options.Cookie.HttpOnly = true;
-    options.Cookie.SameSite = SameSiteMode.Lax;
-    options.ExpireTimeSpan = TimeSpan.FromHours(8);
-    options.SlidingExpiration = true;
-});
 
 // Configure DbContext (uses DefaultConnection from appsettings.json)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
@@ -214,7 +208,6 @@ using (var scope = app.Services.CreateScope())
                     new { Nome = "Sacolas Personalizadas", ParentName = "SACOLAS Personalizadas" },
                     new { Nome = "Sacolas para Presentes", ParentName = "SACOLAS Personalizadas" },
                     new { Nome = "Sacolas para sua Empresa", ParentName = "SACOLAS Personalizadas" },
-                    new { Nome = "Canecas de Cerâmica", ParentName = "CANECAS" },
                     new { Nome = "Canecas Personalizadas", ParentName = "CANECAS" },
                     new { Nome = "Novos Produtos", ParentName = "LANÇAMENTOS" },
                     new { Nome = "Lançamentos Exclusivos", ParentName = "LANÇAMENTOS" },
@@ -303,28 +296,8 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// se MapStaticAssets/WithStaticAssets são extensões do projeto, mantenha-as.
-// caso contrário remova essas linhas.
-app.MapStaticAssets();
-
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Produto}/{action=Index}/{id?}")
-    .WithStaticAssets();
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
-try
-{
-    var startupMsg = $"Host starting. Process Id={System.Diagnostics.Process.GetCurrentProcess().Id}. Listening on environment: {builder.Environment.EnvironmentName}";
-    Console.WriteLine(startupMsg);
-    AppendLog(startupMsg);
-
-    app.Run();
-}
-catch (Exception ex)
-{
-    // Log fatal host exception with stack trace to console and file so it's visible in logs
-    var msg = "Host terminated with exception: " + ex.ToString();
-    Console.WriteLine(msg);
-    AppendLog(msg);
-    throw;
-}
+app.Run();

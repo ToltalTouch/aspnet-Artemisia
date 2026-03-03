@@ -28,6 +28,16 @@ namespace Artemisia.Controllers
             {
                 Produtos = produtos
             };
+            
+            try
+            {
+                if (User?.Identity?.IsAuthenticated == true && User.IsInRole("Admin")) ViewBag.IsAdmin = true;
+                else ViewBag.IsAdmin = false;
+            }
+            catch
+            {
+                ViewBag.IsAdmin = false;
+            }
 
             return View(model);
         }
