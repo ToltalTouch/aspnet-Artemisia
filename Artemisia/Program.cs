@@ -1,10 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 using Artemisia.Data;
 using Artemisia.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
+using Microsoft.CodeAnalysis.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,21 +29,13 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.SlidingExpiration = true;
     });
 
-// Configure DbContext (uses DefaultConnection from appsettings.json)
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-                       ?? "Server=(localdb)\\mssqllocaldb;Database=ArtemisiaDb;Trusted_Connection=True;MultipleActiveResultSets=true";
+// Pega a string de conexão do appsettings.json (ou das variáveis do Render em produção)
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+// Configura o ApplicationDbContext para usar o PostgreSQL
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    // if DefaultConnection looks like a sqlite file connection, use Sqlite provider
-    if (connectionString.TrimStart().StartsWith("Data Source=", StringComparison.OrdinalIgnoreCase))
-    {
-        options.UseSqlite(connectionString);
-    }
-    else
-    {
-        options.UseSqlServer(connectionString);
-    }
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 var app = builder.Build();

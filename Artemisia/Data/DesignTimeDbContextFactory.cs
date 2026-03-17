@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace Artemisia.Data
 {
@@ -10,10 +12,17 @@ namespace Artemisia.Data
     {
         public ApplicationDbContext CreateDbContext(string[] args)
         {
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile("appsettings.Development.json", optional: true)
+                .Build();
+
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            // Keep the same default connection string used in Program.cs for local development
-            var connectionString = "Server=(localdb)\\mssqllocaldb;Database=ArtemisiaDb;Trusted_Connection=True;MultipleActiveResultSets=true";
-            optionsBuilder.UseSqlServer(connectionString);
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            
+            optionsBuilder.UseNpgsql(connectionString);
+
             return new ApplicationDbContext(optionsBuilder.Options);
         }
     }
